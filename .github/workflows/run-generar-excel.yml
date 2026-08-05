@@ -1,24 +1,43 @@
 name: Run generar_excel.py and upload Excel
 
-on: workflow_dispatch:
+on:
+  workflow_dispatch:
 
-permissions: contents: read
+permissions:
+  contents: read
 
-jobs: run-script: runs-on: ubuntu-latest steps: - name: Checkout repository uses: actions/checkout@v4  - name: Set up Python
-    uses: actions/setup-python@v4
-    with:
-      python-version: '3.11'
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Run generar_excel.py
-    run: |
-      python generar_excel.py
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-  - name: Upload Excel artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: proyectos-legislativos
-      path: proyectos_legislativos.xlsx
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run generar_excel.py
+        run: |
+          python generar_excel.py
+
+      - name: Verify artifact exists
+        run: |
+          if [ ! -f proyectos_legislativos.xlsx ]; then
+            echo "ERROR: proyectos_legislativos.xlsx not found"
+            ls -la
+            exit 1
+          fi
+
+      - name: Upload Excel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: proyectos-legislativos
+          path: proyectos_legislativos.xlsx
+          # retention-days: 30   # opcional: descomenta y ajusta si quieres cambiar retención
