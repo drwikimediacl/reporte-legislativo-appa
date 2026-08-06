@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 
 WATCHLIST_URL = "https://docs.google.com/spreadsheets/d/1RBS_VB7d3jyJvJL87gBZg5hx8I2PKslBfd3kWAxVdgA/export?format=csv"
 SENADO_WS = "https://tramitacion.senado.cl/wspublico/tramitacion.php?boletin={numero}"
-OUTPUT_XLSX = "proyectos_legislativos.xlsx"
+OUTPUT_XLSX = f"proyectos_legislativos_{time.strftime('%Y-%m-%d_%H%M%S')}.xlsx"
 
 # Fallback raw URL (public) al db.json en el repo monitor-legislativo
 MONITOR_DB_RAW_URL = "https://raw.githubusercontent.com/drwikimediacl/monitor-legislativo/main/db.json"
